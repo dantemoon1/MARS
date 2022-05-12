@@ -5,6 +5,7 @@
 	asknamep2: .asciiz "Player 2 enter your name: \n"
 	p1: .space 33
 	p2: .space 33
+		.align 2
 	wordone: .space 33
 	wordtwo: .space 33
 	fn: .asciiz "/Users/dante/Documents/MARS/words.txt" #must include full filepath for words.txt
@@ -112,7 +113,6 @@
 		addiu $t4, $t4, 1 #increment the number of words we have parsed
 		beq $t4, $t0, found_word #if we have reached the word we want to use, jump to found_word function
 		j isolate_word #otherwise move to next word
-		
 		
 		
 	singleplayer:
