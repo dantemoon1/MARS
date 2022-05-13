@@ -120,7 +120,16 @@
 		li $v0, 4
 		la $a0, wordone
 		syscall
-		j menuloop
+		li $t0, 0
+		j reset_word #once we finished the game we need to reset the stored word
+		
+	reset_word: #store 0s in all the bytes in the word
+		li $t2, 0
+		sb $t2, 0($a0)
+		addiu $a0, $a0, 1
+		addiu $t0, $t0, 1
+		beq $t0, 33, menuloop
+		j reset_word
 		
 	multiplayer: 
 		j menuloop 
