@@ -3,10 +3,13 @@
 	askname: .asciiz "Enter your name: \n"
 	asknamep1: .asciiz "Player 1 enter your name: \n"
 	asknamep2: .asciiz "Player 2 enter your name: \n"
+	wordprompt1: .asciiz "Player 1 enter a word for player 2 to guess: \n"
+	wordprompt2: .asciiz "Player 2 enter a word for player 1 to guess: \n"
 	p1: .space 33
 	p2: .space 33
 		.align 2
 	wordone: .space 33
+		.align 2
 	wordtwo: .space 33
 	fn: .asciiz "/Users/dante/Documents/MARS/words.txt" #must include full filepath for words.txt
 		.align 2
@@ -52,12 +55,20 @@
 		la $a0, p2 #save the name p2
 		li $a1, 32
 		syscall
-		#li $v0, 4 #printing the names to test they are saved correctly
-		#la $a0, p1
-		#syscall
-		#li $v0, 4
-		#la $a0, p2
-		#syscall 
+		li $v0, 4
+		la $a0, wordprompt1 #print prompt for player1 to enter a word
+		syscall
+		li $v0, 8
+		la $a0, wordone #read in the word and store in wordone
+		li $a1, 32
+		syscall
+		li $v0, 4
+		la $a0, wordprompt2 #print prompt for player2 to enter a word
+		syscall
+		li $v0, 8
+		la $a0, wordtwo #read in the word and store in wordtwo
+		li $a1, 32
+		syscall
 		j multiplayer
 		
 	sp_word: #currently just loads the text file in, need to isolate a single word
@@ -126,13 +137,21 @@
 	reset_word: #store 0s in all the bytes in the word
 		li $t2, 0
 		sb $t2, 0($a0)
+		#sb $t2, 0($a1)
 		addiu $a0, $a0, 1
+		#addiu $a1, $a1, 1
 		addiu $t0, $t0, 1
 		beq $t0, 33, menuloop
 		j reset_word
 		
 	multiplayer: 
-		j menuloop 
+		li $v0, 4
+		la $a0, wordone
+		syscall
+		li $v0, 4
+		la $a0, wordtwo
+		syscall
+		j menuloop
 			
 	j menuloop
 	
